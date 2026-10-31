@@ -48,5 +48,5 @@ jobs:
         with:
           context: ./app
           push: true
-          tags: ${{ secrets.DockerHub_Username }}/devops-app:latest
-            ${{ secrets.DockerHub_Username }}/devops-app:${{ github.sha }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:${{ github.sha }}
