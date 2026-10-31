@@ -5,7 +5,7 @@ const server = http.createServer((req, res) => {
     "Content-Type": "text/plain",
   });
 
-  res.end("Hello from my Updated DevOps project!");
+  res.end("Hello from my Kubernetes Devops Project is working fine !");
 });
 
 server.listen(3000, "0.0.0.0", () => {
