@@ -1,0 +1,52 @@
+name: Node.js Docker CI Pipline
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # step1 : Download source code
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # step 2 : stepup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      # step 3: Install dependencies
+      - name: Install dependencies
+        working-directory: ./app
+        run: npm install
+
+      # step 4: Test application
+      - name: Test application
+        working-directory: ./app
+        run: npm test
+
+      # step 5: Build docker
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+        #step 6 : Login to DockerHub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # step 7 : Build and push docker image
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app
+          push: true
+          tags: ${{ secrets.DockerHub_Username }}/devops-app:latest
+            ${{ secrets.DockerHub_Username }}/devops-app:${{ github.sha }}
